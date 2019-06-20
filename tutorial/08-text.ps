@@ -1,0 +1,78 @@
+%!PS
+
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a fiducial-drawing subroutine
+% stack: x y
+
+/Fiducial {
+	gsave
+	0 .5 1 setrgbcolor
+	newpath
+	2 copy              % x y x y
+	10 0 360 arc        % x y
+	moveto              % -
+	0 -20 rmoveto       % move to bottom of vertical line
+	0 40 rlineto        % vertical cross-hair
+	-20 -20 rmoveto     % move to left end of horizontal crosshair 
+	40 0 rlineto        % horizontal crosshair
+	2 setlinewidth
+	stroke
+	grestore
+} def
+
+
+/Message (.Hello World! xyz 123) def
+/FontHeight 40 def
+/Leading FontHeight 10 add def
+/PosnY 735 def		% Y axis baseline position of the next line of text
+/PosnX 25 def		% X axis position of the next line of text
+
+/Newline {
+	/PosnY PosnY Leading sub def	% PosnY = PosnY - Leading
+	PosnX PosnY 					% put start posn for next line on stack 
+	2 copy							%            ... twice
+	Fiducial						% draw a fiducial
+	moveto							% move to position of next line
+} def
+
+/Courier findfont FontHeight scalefont setfont
+Newline			% move to the next line and print a fiducial
+Message show	% pop and print a text string
+
+/Courier-bold findfont FontHeight scalefont setfont
+Newline Message show
+
+/Helvetica findfont FontHeight scalefont setfont
+Newline Message show
+/Helvetica-Bold findfont FontHeight scalefont setfont
+Newline Message show
+
+/Times findfont FontHeight scalefont setfont
+Newline Message show
+/Times-Bold findfont FontHeight scalefont setfont
+Newline Message show
+
+/NewCenturySchlbk findfont FontHeight scalefont setfont
+Newline Message show
+/NewCenturySchlbk-Bold findfont FontHeight scalefont setfont
+Newline Message show
+
+showpage

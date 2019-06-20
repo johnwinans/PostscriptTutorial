@@ -1,0 +1,304 @@
+%!PS
+
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+% newpath
+% x y moveto
+% x y lineto
+% dx dy rlineto
+% dx dy moveto
+% 
+% stroke
+% closepath
+% showpage
+% 
+% 
+% fill
+% g setgray
+% r g b setrgbcolor
+% 
+% .025 setlinewidth
+% 2 setlinecap
+% 2 setlinejoin
+
+% a line
+newpath				% create a new path is the current graphics context
+72 72 moveto		% starting position absolute position
+72 144 lineto		% draw line to absolute position (up 1 inch)
+stroke
+showpage
+
+
+
+
+
+
+
+% a right angle
+newpath             % create a new path is the current graphics context
+72 72 moveto        % starting position absolute position
+72 144 lineto       % draw line to absolute position (up 1 inch)
+144 144 lineto      % draw line to absolute position (right 1 inch)
+stroke
+showpage
+
+% a right angle with fat lines
+newpath             % create a new path is the current graphics context
+20 setlinewidth
+72 72 moveto        % starting position absolute position
+72 144 lineto       % draw line to absolute position (up 1 inch)
+144 144 lineto      % draw line to absolute position (right 1 inch)
+stroke
+showpage
+
+
+% A messy triangle
+newpath             % create a new path is the current graphics context
+20 setlinewidth
+72 72 moveto        % starting position absolute position
+72 144 lineto       % draw line to absolute position (up 1 inch)
+144 144 lineto      % draw line to absolute position (right 1 inch)
+72 72 lineto		% draw the hypotenuse
+stroke
+showpage
+
+% looks ugly because path corners are mitered.  But the begin and end are not.
+% Address this using closepath:
+newpath             % create a new path is the current graphics context
+20 setlinewidth
+72 72 moveto        % starting position absolute position
+72 144 lineto       % draw line to absolute position (up 1 inch)
+144 144 lineto      % draw line to absolute position (right 1 inch)
+72 72 lineto		% draw the hypotenuse
+closepath
+stroke
+showpage
+
+% since are closing the path, we don't need the last lineto:
+newpath             % create a new path is the current graphics context
+20 setlinewidth
+72 72 moveto        % starting position absolute position
+72 144 lineto       % draw line to absolute position (up 1 inch)
+144 144 lineto      % draw line to absolute position (right 1 inch)
+closepath
+stroke
+showpage
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Drawing using relative position in a path
+ 
+newpath             % create a new path is the current graphics context
+20 setlinewidth
+172 72 moveto       % starting position absolute position
+0 72 rlineto       % draw line up 1 inch from current position
+72 0 rlineto       % draw line right 1 inch from current position
+closepath
+stroke
+showpage
+
+
+% Note that drawing things with all relative moves makes it easier to 
+% relocate them.  Same thing with initial position pushed before:
+
+
+200 200				% x y in stack for a future moveto!
+
+newpath
+moveto       		% starting position absolute position
+0 72 rlineto
+72 0 rlineto
+closepath
+20 setlinewidth		% line width applies to the stroke, not to the lineto!
+stroke
+showpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Demonstrate what happens if there is no initial point for an rlineto:
+
+%newpath
+%rlineto				% <--- no starting point!
+
+% This is also not OK:
+
+%200 200 moveto
+%newpath
+%0 72 rlineto		% the path has no starting point!
+
+% Take away: a path has to start at a real position
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Q: Why was this OK to do before a newpath??
+200 200 moveto
+
+% A: There is always an active path!  Newpath just starts a NEW one!
+
+% given the above moveto, we can continue to do this:
+0 72 rlineto        
+stroke
+
+% Note that after the stroke the path has been 'consumed' and there
+% is no longer a 'currentpoint' in the now new and empty path.
+%100 100 rlineto
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a path need not be drawn with continuous line segments
+
+newpath				% create a new path is the current graphics context
+72 72 moveto		% starting position absolute position
+0 72 rlineto		% draw line to absolute position (up 1 inch)
+72 72 rlineto		% relative to the current path position
+72 72 rmoveto		% skip up and to right without drawing
+72 72 rlineto
+0 -72 rlineto		% draw downward one inch
+stroke				% stroke will consume the current path
+
+% .. but if you do this, closepath might not be intuitive
+
+newpath				% create a new path is the current graphics context
+72 72 moveto		% starting position absolute position
+0 72 rlineto		% draw line to absolute position (up 1 inch)
+72 72 rlineto		% relative to the current path position
+72 72 rmoveto		% skip up and to right without drawing
+72 72 rlineto
+0 -72 rlineto		% draw downward one inch
+closepath
+stroke				% stroke will consume the current path
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Note that things like the linewidth persists in the graphics state
+% until the end of the current page!
+
+20 setlinewidth
+
+% draw a filled triangle
+newpath
+400 20 moveto		% start absolute position 
+0 100 rlineto
+100 0 rlineto
+closepath
+.3 setgray			% 0 = black 1 = white	<--- set the gray-level!
+fill				% fill rather than stroke (linewidth not matter to fill)
+
+
+% drawing on top of things already drawn will obscure them
+newpath
+400 50 moveto		% start absolute position 
+0 100 rlineto
+100 0 rlineto
+closepath
+0 setgray
+stroke				% this will be drawn on top of prior stuff!
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If we want to draw a triangle outline with a filled interior
+% we can save the path by saving the whole graphics context:
+newpath
+300 400 moveto
+0 100 rlineto
+100 0 rlineto
+closepath
+10 setlinewidth		% applies to the stroke, not to the lineto
+1 .5 .2 setrgbcolor
+gsave				% save all current graphics settings including the path
+stroke				% 'consume' the path
+grestore			% restore the path
+.5 .7 .9 setrgbcolor	% set a color 0-1 for each of R G and B
+fill
+
+
+% Note that order matters!  If stroke first then fill then we the
+% fill will obscure part of the stroke.  Reverse if this is a problem.
+ 
+10 setlinewidth		% applies to the stroke, not to the lineto
+
+newpath
+300 400 moveto
+0 100 rlineto
+100 0 rlineto
+closepath
+1 .5 .2 setrgbcolor
+gsave
+fill				% linewidth does not matter to fill
+grestore
+.5 .7 .9 setrgbcolor	% set a color 0-1 for each of R G and B
+stroke
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Adjusting how the corners are drawn in a path:
+
+newpath
+50 400 moveto
+0 100 rlineto
+100 0 rlineto
+closepath
+20 setlinewidth
+0 setgray
+%2 setlinejoin		% bevel/chamfer
+1 setlinejoin		% round
+%0 setlinejoin		% miter (default)
+stroke
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Setting the method used to draw the endpoints of lines.
+% Note that the setlinewidth is still set from above!
+
+newpath
+50 550 moveto
+0 100 rlineto
+%0 setlinecap		% butt
+%1 setlinecap		% round 
+2 setlinecap		% projecting 
+20 setlinewidth
+0 setgray
+stroke
+
+% as a reference to show cap type 2 above
+newpath
+50 550 moveto
+0 100 rlineto
+0 setlinecap		% butt caps
+2 setlinewidth		% super skinny line
+1 setgray			% draw a white line
+stroke

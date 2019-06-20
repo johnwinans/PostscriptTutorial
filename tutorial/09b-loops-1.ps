@@ -1,0 +1,86 @@
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+% Talk about repeat, for and loop
+
+% Show how this works:
+
+% do something N times
+3 repeat 
+{
+	555 ==
+}
+
+% start increment finish { proc } for
+% before each time the proc is executed the counter is pushed.
+0 1 9 {
+	==
+} for
+
+0 1 9 {
+	1 string cvs	% same as above but make the count into a string!
+	==
+} for
+
+% go forever unless we execute an 'exit' operator
+{
+	22 ==
+	exit
+} 
+loop
+
+/Counter 0 def
+/Max 9 def
+/Inc 1 def
+{
+	Counter ==
+	Counter Max ge { exit } if
+	/Counter Counter Inc add def
+}
+loop
+
+% more interesting usage of loop would be:
+
+/NewCenturySchlbk findfont 20 scalefont setfont
+/Height 700 def
+/PosX 30 def
+/PosY 50 def
+/Leading 25 def
+{
+	PosX PosY moveto
+	PosY
+	4 string cvs show
+	/PosY PosY Leading add def
+	PosY Height gt { exit } if
+} 
+loop
+
+
+/NewCenturySchlbk findfont 20 scalefont setfont
+/Height 700 def
+/PosX 30 def
+/PosY 50 def
+/Leading 25 def
+PosY Leading Height
+{
+	dup
+	PosX exch moveto
+	4 string cvs show
+}
+for
+

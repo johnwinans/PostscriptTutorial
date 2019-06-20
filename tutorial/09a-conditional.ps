@@ -1,0 +1,67 @@
+%!PS
+
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+% Conditional expressions
+% true  false
+
+true 
+{
+	123 ==		% debug-print a number to let us know we got here
+} 
+if
+
+false
+{
+	456 ==		% debug-print a number to let us know we got here
+}
+if
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+false 
+{
+    123 ==      % debug-print a number to let us know we got here
+} 
+{
+    456 ==      % debug-print a number to let us know we got here
+} 
+ifelse
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Relational operators
+
+111 222 lt		% pop compare and push true or false
+{ 123 == }
+if
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% conjunctions
+
+true true and
+true true or
+true false or
+false false or
+true true xor ==
+false true xor ==
+true not

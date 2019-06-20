@@ -1,0 +1,43 @@
+%!PS
+
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+% Print the numbers for a score reel
+
+% A procedure to convert from mm to points
+% stack: n  ->  n
+/in { 72 mul } def
+
+% A procedure to convert from mm to points
+% stack: n  ->  n
+/mm { 2.83465 mul } def
+
+/NewCenturySchlbk-Bold findfont 75 mm scalefont setfont
+
+newpath
+1 in 1 in moveto
+
+12					% i				place some integer value on the stack
+%2 string			% i (\000)		push a string with one null character in it
+(99999999)
+cvs					% (i)			format the i value as a printable digit
+show				% -				print the string
+
+
+showpage

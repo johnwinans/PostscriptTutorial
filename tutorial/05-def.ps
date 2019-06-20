@@ -1,0 +1,140 @@
+%!PS
+
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+/Xpos 100 def		% define 'Xpos' to have the value 100
+
+% we can now use 'Xpos' anywhere we could have put '100'
+Xpos
+pstack
+Xpos
+pstack
+add
+==
+
+
+% Draw a path using the 'Xpos' definition
+newpath
+Xpos 50 moveto		% move to 100,50
+100 100 rlineto		% draw a line on 45 degree angle
+stroke
+
+
+% Add 50 to Xpos and place the result back into Xpos
+/Xpos Xpos 50 add def	% Xpos = Xpos + 50
+
+
+newpath
+Xpos 50 moveto		% move to 150,50
+100 100 rlineto		% draw a line on 45 degree angle
+stroke
+
+
+% define an entire procedure
+/Draw45 {
+	newpath
+	Xpos 50 moveto
+	100 100 rlineto
+	stroke
+} def
+
+/Xpos Xpos 50 add def
+Draw45
+
+
+
+/IncXpos
+{
+	/Xpos Xpos 50 add def
+} def
+
+
+IncXpos Draw45
+
+
+
+
+% TAKEAWAY:  Things within {} have their execution deferred !
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A fiducial-drawing procedure.
+% stack: x y
+/Fiducial {
+	newpath
+	2 copy              % x y x y
+	10 0 360 arc        % x y
+	moveto              % -
+	0 -20 rmoveto       % move to bottom of vertical line
+	0 40 rlineto        % vertical cross-hair
+	-20 -20 rmoveto     % move to left end of horizontal crosshair 
+	40 0 rlineto        % horizontal crosshair
+	1 setlinewidth
+	stroke
+} def
+
+
+0 setgray
+100 200 Fiducial
+1 0 0 setrgbcolor
+200 200 Fiducial
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Draw a box.
+% stack: llx lly urx ury
+
+/Box {
+			  % want: llx lly  urx lly  urx ury  llx ury
+	1 index         % llx lly  urx ury  urx
+	3 index         % llx lly  urx ury  urx lly
+	4 2 roll        % llx lly  urx lly  urx ury
+	5 index         % llx lly  urx lly  urx ury  llx
+	1 index         % llx lly  urx lly  urx ury  llx ury
+
+	newpath
+	moveto			% llx lly  urx lly  urx ury
+	lineto			% llx lly  urx lly
+	lineto			% llx lly
+	lineto			% -
+	closepath
+	stroke
+} def
+
+50 50 Fiducial
+200 300 Fiducial
+
+50 50 200 300 Box
+
+
+% same thing without replicated values
+
+
+50 50 200 300 
+4 copy
+
+1 setlinewidth
+1 0 0 setrgbcolor
+Fiducial
+Fiducial
+
+0 setgray
+Box

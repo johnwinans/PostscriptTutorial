@@ -1,0 +1,67 @@
+%!PS
+
+%   Postscript Tutorial Notes
+%
+%    Copyright (C) 2019 John Winans
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a fiducial-drawing subroutine
+% stack: x y
+
+/Fiducial {
+	newpath
+	2 copy              % x y x y
+	10 0 360 arc        % x y
+	moveto              % -
+	0 -20 rmoveto       % move to bottom of vertical line
+	0 40 rlineto        % vertical cross-hair
+	-20 -20 rmoveto     % move to left end of horizontal crosshair 
+	40 0 rlineto        % horizontal crosshair
+	2 setlinewidth
+	stroke
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Drawing a line that arcs into another line
+
+
+1 0 0 setrgbcolor
+200 200 Fiducial
+
+0 1 0 setrgbcolor
+200 300 Fiducial
+
+0 0 1 setrgbcolor
+300 300 Fiducial
+
+0 setgray
+5 setlinewidth
+
+newpath
+200 200 moveto      % where we will start drawing into the arc
+200 300				% start traveling toward this point, but arc past it
+300 300 			% arc until we are traveling toward this point
+30 					% when passing 200 300, arc using this radius
+arcto				% draw the arc
+pop					
+pop					% arcto leaves the begining and ending x,y 
+pop					% coordinates of the arc on the stack for reference.
+pop					% we pop them here because we don't need them
+
+300 300 lineto		% finish the line into the target point
+
+stroke
