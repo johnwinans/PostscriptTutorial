@@ -53,20 +53,21 @@
 	lineto			% llx lly urx lly
 	lineto			% llx lly
 	lineto			% -
-	closepath
+	closepath		% -
 
-	stroke
+	stroke			% -
 } def
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % draw a text string with a box around it at: 50,500
-(123abfgy) 50 500 
+
+(123abfgy) 50 500 	% s x y		a text string and location to print it
 
 newpath
-2 copy				% s x y x y
-moveto				% s x y
-3 2 roll			% x y s
+2 copy				% s x y x y	duplicate starting coordinate for moveto
+moveto				% s x y		go to where the string will be printed (for charpath)
+3 2 roll			% x y s		put the string at the top of the stack
 
 %/Courier-bold findfont FontHeight scalefont setfont
 /NewCenturySchlbk-Bold findfont FontHeight scalefont setfont
@@ -80,8 +81,12 @@ moveto				% s x y
 %showpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-dup false charpath flattenpath pathbbox % x y s llx lly urx ury
+dup 				% x y s s
 
+false charpath 		% x y s		append the path of character glyph outlines to the path
+flattenpath 		% x y s		convert curves to sequences of straight lines for pathbbox
+					%			pathbox would be confused by curve control points
+pathbbox 			% x y s llx lly urx ury		put ll and ur coordinates on the stack
 
 .6 .6 1 setrgbcolor	% light blue
 5 setlinewidth		%           Illustrate that a drawn line is centered on the path
@@ -90,8 +95,8 @@ Box					% x y s		Draw a blue box around the text path
 .1 setlinewidth		%			Draw hairline fiducials
 3 1 roll			% s x y
 2 copy				% s x y x y
-0 1 0 setrgbcolor
-Fiducial			% s x y		Place a green mark showing the baseline
+0 0 1 setrgbcolor
+Fiducial			% s x y		Place a blue mark showing the baseline
 
 2 copy				% s x y x y
 1 0 0 setrgbcolor
